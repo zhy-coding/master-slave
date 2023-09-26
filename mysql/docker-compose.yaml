@@ -1,0 +1,42 @@
+version: "3.8"
+services:
+  mysql-master:
+    container_name: mysql-master
+    image: mysql:8.0.22
+    ports:
+      - "3316:3306"
+    privileged: true
+    environment:
+      MYSQL_ROOT_PASSWORD: "123456"
+    volumes:
+      - $PWD/master/conf:/etc/mysql
+      - $PWD/master/data:/var/lib/mysql
+      - $PWD/master/initsql:/docker-entrypoint-initdb.d
+      - $PWD/master/mysql-files:/var/lib/mysql-files
+      - $PWD/master/shell:/var/lib/shell
+
+    command: [
+      '--character-set-server=utf8mb4',
+      '--collation-server=utf8mb4_general_ci',
+      '--max_connections=3000'
+    ]
+
+  mysql-slave:
+    container_name: mysql-slave
+    image: mysql:8.0.22
+    ports:
+      - "3326:3306"
+    privileged: true
+    volumes:
+      - $PWD/slave/conf:/etc/mysql
+      - $PWD/slave/data:/var/lib/mysql
+      - $PWD/slave/initsql:/docker-entrypoint-initdb.d
+      - $PWD/slave/mysql-files:/var/lib/mysql-files
+      - $PWD/slave/shell:/var/lib/shell
+    environment:
+      MYSQL_ROOT_PASSWORD: "123456"
+    command: [
+      '--character-set-server=utf8mb4',
+      '--collation-server=utf8mb4_general_ci',
+      '--max_connections=3000'
+    ]
