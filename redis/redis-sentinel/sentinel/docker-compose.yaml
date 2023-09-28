@@ -1,0 +1,24 @@
+version: "3.8"
+services:
+  sentinel1:
+    container_name: redis-sentinel-1
+    image: redis:7.0.4
+    command: redis-sentinel /usr/local/etc/redis/sentinel.conf
+    volumes:
+      - ./sentinel1.conf:/usr/local/etc/redis/sentinel.conf
+  sentinel2:
+    container_name: redis-sentinel-2
+    image: redis:7.0.4
+    command: redis-sentinel /usr/local/etc/redis/sentinel.conf
+    volumes:
+      - ./sentinel2.conf:/usr/local/etc/redis/sentinel.conf
+  sentinel3:
+    container_name: redis-sentinel-3
+    image: redis:7.0.4
+    command: redis-sentinel /usr/local/etc/redis/sentinel.conf
+    volumes:
+      - ./sentinel3.conf:/usr/local/etc/redis/sentinel.conf
+networks:
+  default:
+    name: redis_default
+    external: true
