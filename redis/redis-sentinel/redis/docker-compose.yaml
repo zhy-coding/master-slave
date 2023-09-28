@@ -1,0 +1,22 @@
+version: "3.8"
+services:
+  master:
+    image: redis:7.0.4
+    container_name: redis-master
+    # slave-announce-ip 从redis链接主ip slave-announce-port 6379 端口
+    command: bash -c "redis-server --protected-mode no --slave-announce-ip 192.168.84.143 --slave-announce-port 6379"
+    ports:
+      - 6379:6379
+  slave1:
+    image: redis:7.0.4
+    container_name: redis-slave-1
+    # slave-announce-port 从redis链接主redis 使用的端口
+    command: bash -c "redis-server --protected-mode no --slaveof redis-master 6379 --slave-announce-ip 192.168.84.143 --slave-announce-port 6380"
+    ports:
+      - 6380:6379
+  slave2:
+    image: redis:7.0.4
+    container_name: redis-slave-2
+    ports:
+      - 6381:6379
+    command: bash -c "redis-server --protected-mode no --slaveof redis-master 6379 --slave-announce-ip 192.168.84.143 --slave-announce-port 6381"
